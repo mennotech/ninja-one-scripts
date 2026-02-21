@@ -1,0 +1,33 @@
+# Environment files with credentials
+.env
+
+# Generated sync files (created by Get-Scripts.ps1)
+SYNC-REPORT.md
+
+# Downloaded scripts folders (optional - uncomment if you don't want to commit downloaded scripts)
+# Windows/
+# macOS/
+# Linux/
+# Unknown/
+
+# PowerShell artifacts
+*.ps1.bak
+*.ps1~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
