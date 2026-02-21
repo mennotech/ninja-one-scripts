@@ -162,7 +162,7 @@ begin {
             Write-Error "Failed to install run-hidden64 module. Please check the installation path."
             exit 1
         } else {
-            Write-Host "run-hidden64 module downloaded and extracted successfully."
+            Write-Host "run-hidden64 module downloaded successfully."
         }
     }
 }
