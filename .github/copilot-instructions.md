@@ -3,6 +3,30 @@
 ## Project Overview
 This repository contains administrative scripts designed for NinjaOne RMM (Remote Monitoring and Management) platform. Scripts are primarily PowerShell-based and focus on Windows system management, monitoring, and automation.
 
+## NinjaOne Platform Constraints
+
+### Supported Script Languages
+NinjaOne supports the following script languages:
+- **PowerShell** (primary focus of this repository)
+- JavaScript
+- Batch
+- ShellScript
+- VBS Script
+
+### Parameter Restrictions
+- **Special Characters**: You CANNOT use the following special characters in parameters: `&|;$><`!`
+- **Parameter Types**: NinjaOne only accepts **string value parameters**. This includes:
+  - String values
+  - String decimal integers
+  - Checkbox options (represented as strings)
+- All parameters must be designed to accept string input, even when representing numbers or boolean values
+
+### Scripting Considerations
+- **Reboot Handling**: Do NOT use NinjaOne agent for custom reboot scripts. Use NinjaOne's native reboot script to ensure the agent can handle the action properly.
+- **Architecture Parameter**: Automations marked as "All" for the Architecture parameter run based on the device's native architecture (32 or 64-bit).
+- **Script Categories**: Scripts can be assigned to one or multiple categories to organize the Automation Library.
+- **Template Library**: NinjaOne provides a Template Library with native scripts developed by the NinjaOne team. These scripts are provided "as-is" and should be tested before implementation.
+
 ## PowerShell Script Standards
 
 ### Script Header Requirements
@@ -19,12 +43,32 @@ All PowerShell scripts MUST include:
 - Use `begin` block for initialization, validation, and prerequisite checks
 - Use `process` block for main logic
 - Use `end` block for cleanup and final output
+- Always wrap variables inside double quotes when used in strings to prevent parsing issues
 
 ### NinjaOne Integration
 - Support RMM custom field parameters (prefix with "RMM" in parameter names)
 - Check for environment variables that may override parameters (e.g., `$env:RMMFieldName`)
 - Handle environment variable nulls with: `if ($env:VarName -and $env:VarName -notlike "null")`
 - Provide clear output for RMM field population
+
+#### Custom Fields and Script Variables
+- **Reading/Writing Custom Fields**: Use NinjaOne's built-in snippets (accessed via Ctrl+Space in the NinjaOne script editor) to interact with custom field data
+- **Get Snippets**: Use to read data from specific custom fields
+- **Set Snippets**: Use to write data to specific custom fields
+- **Script Variables**: Can be added from the script editor to inject dynamic values during execution
+- Design scripts to work both in NinjaOne's editor (with snippets) and standalone for local testing
+
+#### Automation Configuration
+When creating scripts for NinjaOne, configure the following parameters:
+- **Name**: Descriptive name for the script
+- **Description**: Optional explanation of the script's function
+- **Categories**: Assign to one or multiple categories for organization
+- **Language**: PowerShell, JavaScript, Batch, ShellScript, or VBS Script
+- **Operating System**: Appropriate OS for the script (changes based on language)
+- **Architecture**: 32-bit, 64-bit, or All (All runs based on device's native architecture)
+- **Run As**: Specify the role under which the script will run (options vary by OS)
+- **Script Variables**: Dynamic values injected at runtime
+- **Parameters**: Accept string-only arguments; no special characters (`&|;$><`!`) allowed
 
 ### Administrative Privileges
 - Include `Test-IsElevated` function when admin rights are required
