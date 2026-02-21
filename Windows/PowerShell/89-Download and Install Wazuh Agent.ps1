@@ -178,7 +178,7 @@ begin {
         [CmdletBinding()]
         param()
         
-        $TargetDir = Join-Path -Path $env:ProgramData -ChildPath "WazahAgent-Installer"
+        $TargetDir = Join-Path -Path $env:ProgramData -ChildPath "WazuhAgent-Installer"
 
         # Tools to be downloaded
         $Tools = @(
