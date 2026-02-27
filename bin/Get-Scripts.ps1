@@ -58,7 +58,7 @@
     1.0.0 - 2026-02-20 - Initial release
 
 .LINK
-    https://github.com/yourusername/ninja-one-scripts
+    https://github.com/mennotech/ninja-one-scripts
 
 .LICENSE
     MIT License - See LICENSE file in repository root
@@ -194,7 +194,7 @@ begin {
         }
         
         # Add scope parameter (optional, defaults to all configured scopes in the API application)
-        if ($Scope -and $Scope -ne "") {
+        if ($Scope) {
             $body.scope = $Scope
         }
         
@@ -309,42 +309,6 @@ begin {
         }
     }
     
-    function Get-NinjaOneScript {
-        <#
-        .SYNOPSIS
-            Retrieves a specific script's details from NinjaOne API.
-        #>
-        param(
-            [Parameter(Mandatory = $true)]
-            [String]$AccessToken,
-            
-            [Parameter(Mandatory = $true)]
-            [String]$Instance,
-            
-            [Parameter(Mandatory = $true)]
-            [String]$ScriptId
-        )
-        
-        $apiUrl = "https://$Instance/api/v2/automation/scripts/$ScriptId"
-        
-        $headers = @{
-            Authorization = "Bearer $AccessToken"
-            Accept        = "application/json"
-        }
-        
-        try {
-            Write-Verbose "Retrieving script details for ID: $ScriptId"
-            
-            $script = Invoke-RestMethod -Uri $apiUrl -Method Get -Headers $headers -ErrorAction Stop
-            
-            return $script
-        }
-        catch {
-            # Don't use Write-Error here - let the caller handle error output
-            throw
-        }
-    }
-    
     function Get-ScriptFileExtension {
         <#
         .SYNOPSIS
@@ -398,7 +362,10 @@ begin {
             [PSCustomObject]$Script,
             
             [Parameter(Mandatory = $true)]
-            [String]$BasePath
+            [String]$BasePath,
+            
+            [Parameter(Mandatory = $true)]
+            [String]$Instance
         )
         
         # Determine OS type folder (use first OS if multiple)
@@ -740,7 +707,7 @@ process {
                 }
                 
                 if ($CreateStubs) {
-                    $stubPath = Save-NinjaScriptStub -Script $script -BasePath $OutputPath
+                    $stubPath = Save-NinjaScriptStub -Script $script -BasePath $OutputPath -Instance $instance
                     if ($stubPath) {
                         $stubsCreated++
                     }

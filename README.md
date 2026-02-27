@@ -92,8 +92,11 @@ Automatically updates metadata headers for scripts that have actual content (non
 
 **Usage:**
 ```powershell
-# Update headers for all scripts with content
+# Update headers for all scripts with content (run from repo root)
 .\Update-ScriptHeaders.ps1
+
+# Specify a custom output path and metadata file
+.\Update-ScriptHeaders.ps1 -OutputPath "C:\NinjaScripts"
 
 # Run with verbose output to see what's being processed
 .\Update-ScriptHeaders.ps1 -Verbose
