@@ -1,4 +1,3 @@
-<#
 .SYNOPSIS
     Syncs NinjaOne script metadata with local repository and creates stub files for manual script content management.
 

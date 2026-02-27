@@ -3,7 +3,7 @@ REM Script Name: Putty Registry Backup
 REM ==============================================================================
 REM
 REM Description:
-REM   A script to backup the putty configuration to a reg file store in the user's profile directory.
+REM   A script to backup the putty configuration to a reg file stored in the user's profile directory.
 REM
 REM Metadata:
 REM   - NinjaOne Script ID: 98
@@ -16,15 +16,5 @@ REM   - Last Updated By: Roland Penner
 REM   - Last Updated: 2025-06-04 17:53:42
 REM   - Active: True
 REM ==============================================================================
-REM INSTRUCTIONS:
-REM 1. Open NinjaOne GUI: https://ca.ninjarmm.com
-REM 2. Navigate to: Administration → Library → Automation → Scripts
-REM 3. Find and open: "Putty Registry Backup"
-REM 4. Copy the entire script content
-REM 5. Paste below this header (replace the placeholder comment)
-REM 6. Save and commit to Git
-REM ==============================================================================
 
 REM TODO: Paste script content from NinjaOne GUI here
-
-

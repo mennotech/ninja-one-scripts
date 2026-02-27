@@ -97,7 +97,7 @@ foreach ($file in $allFiles) {
         try {
             Rename-Item -Path $file.FullName -NewName $expectedFileName -ErrorAction Stop
             $relativePath = $file.FullName -replace [regex]::Escape($PWD.Path + '\'), ''
-            Write-Host "  [RENAME] $relativePath → $expectedFileName" -ForegroundColor Cyan
+            Write-Host "  [RENAME] $relativePath -> $expectedFileName" -ForegroundColor Cyan
             $renamedCount++
             # Update file reference for subsequent processing
             $file = Get-Item $newPath
