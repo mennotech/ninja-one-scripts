@@ -1,0 +1,162 @@
+# ==============================================================================
+# Script Name: Remove Dell Support Assist
+# ==============================================================================
+#
+# Description:
+#   Removes Dell Support Assist from the system.
+#
+# Metadata:
+#   - NinjaOne Script ID: 96
+#   - Language: powershell
+#   - OS Type: Windows
+#   - Architecture: 64, 32
+#   - Created By: NinjaOne
+#   - Created On: 2025-06-02
+#   - Last Updated By: Roland Penner
+#   - Last Updated: 2025-06-18 22:10:04
+#   - Active: True
+# ==============================================================================
+#Requires -Version 5.1
+
+<#
+.SYNOPSIS
+    Removes Dell Support Assist from the system.
+.DESCRIPTION
+    Removes Dell Support Assist from the system.
+
+    Note: Other Dell SupportAssist related applications will not be removed. This script can be modified to account for them if needed.
+      See line 43 for more details
+.EXAMPLE
+    (No Parameters)
+    
+    [Info] Dell SupportAssist found
+    [Info] Removing Dell SupportAssist using msiexec
+    [Info] Dell SupportAssist successfully removed
+.OUTPUTS
+    None
+.NOTES
+    Minimum OS Architecture Supported: Windows 10, Windows Server 2016
+    Release Notes: Initial Release
+#>
+
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $id = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $p = New-Object System.Security.Principal.WindowsPrincipal($id)
+        $p.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error -Message "[Error] Access Denied. Please run with Administrator privileges."
+        exit 1
+    }
+
+    # Get UninstallString for Dell SupportAssist from the registry
+    $DellSA = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*', 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' | 
+        Where-Object { $_.DisplayName -eq 'Dell SupportAssist' `
+                    -or $_.DisplayName -eq 'Dell SupportAssist Remediation' `
+                    -or $_.DisplayName -eq 'Dell SupportAssist OS Recovery Plugin for Dell Update' `
+                    -or $_.DisplayName -eq 'Dell SupportAssist OS Recovery' `
+                    -or $_.DisplayName -eq 'Dell SupportAssistAgent' `
+            } | 
+        # Replace the line above with additions like below
+        # Where-Object { $_.DisplayName -eq 'Dell SupportAssist' -or $_.DisplayName -eq 'Dell SupportAssist Remediation' } |
+        # Other Dell apps related to SupportAssist:
+        # 'Dell SupportAssist OS Recovery'
+        # 'Dell SupportAssist'
+        # 'DellInc.DellSupportAssistforPCs'
+        # 'Dell SupportAssist Remediation'
+        # 'SupportAssist Recovery Assistant'
+        # 'Dell SupportAssist OS Recovery Plugin for Dell Update'
+        # 'Dell SupportAssistAgent'
+        # 'Dell Update - SupportAssist Update Plugin'
+        # 'Dell SupportAssist Remediation'
+        Select-Object -Property DisplayName, UninstallString
+
+    # Check if Dell SupportAssist is installed
+    if ($DellSA) {
+        Write-Host "[Info] Dell Apps found"
+    }
+    else {
+        Write-Host "[Info] Dell SupportAssist Apps not found"
+        exit 1
+    }
+
+    $DellSA | ForEach-Object {
+        $App = $_
+        Write-Host "[Info] Removing $($App.DisplayName)..."
+        # Uninstall Dell SupportAssist
+        if ($App.UninstallString -match 'msiexec.exe') {
+            # Extract the GUID from the UninstallString
+            $null = $App.UninstallString -match '{[A-F0-9-]+}'
+            $guid = $matches[0]
+            Write-Host "[Info] Removing $($App.DisplayName) using msiexec"
+            try {
+                $Process = $(Start-Process -FilePath "msiexec.exe" -ArgumentList "/x $($guid) /qn /norestart" -Wait -PassThru)
+                if ($Process.ExitCode -ne 0) {
+                    throw $Process.ExitCode
+                }
+            }
+            catch {
+                Write-Host "[Error] Error removing $($App.DisplayName) via $($App.UninstallString) Exit Code: $($Process.ExitCode)"
+                $ExitError = 1
+            }
+        }
+        elseif ($App.UninstallString -match 'DellSupportAssistRemediationServiceInstaller.exe') {
+            try {
+                $Process = $(Start-Process -FilePath "$($App.UninstallString)" -Wait -PassThru)
+                if ($Process.ExitCode -ne 0) {
+                    throw $Process.ExitCode
+                }
+            }
+            catch {
+                Write-Host "[Error] Error removing $($App.DisplayName) via $($App.UninstallString) Exit Code: $($Process.ExitCode)"
+                $ExitError = 1
+            }
+        }
+        elseif ($App.UninstallString -match 'SupportAssistUninstaller.exe|DellUpdateSupportAssistPlugin.exe') {
+            try {
+                $Process = $(Start-Process -FilePath "$($App.UninstallString)" -ArgumentList "/arp /S /norestart" -Wait -PassThru)
+                if ($Process.ExitCode -ne 0) {
+                    throw $Process.ExitCode
+                }
+            }
+            catch {
+                Write-Host "[Error] Error removing $($App.DisplayName) via $($App.UninstallString) Exit Code: $($Process.ExitCode)"
+                $ExitError = 1
+            }
+        }
+        else {
+            Write-Host "[Error] Unsupported uninstall method found. $($App.UninstallString)"
+            $ExitError = 1
+        }
+    }
+
+    $SupportAssistClientUI = Get-Process -Name "SupportAssistClientUI" -ErrorAction SilentlyContinue
+    if ($SupportAssistClientUI) {
+        Write-Host "[Info] SupportAssistClientUI still running and will be stopped"
+        try {
+            $SupportAssistClientUI | Stop-Process -Force -Confirm:$false -ErrorAction Stop
+        }
+        catch {
+            Write-Host "[Warn] Failed to stop the SupportAssistClientUI process. Reboot to close process."
+        }
+    }
+
+    if ($ExitError) {
+      Write-Host "[Info] One or more error occurred "
+      exit $ExitError
+    } else {
+      Write-Host "[Info] Dell SupportAssist successfully removed"
+      exit 0
+    }
+}
+end {
+    
+    
+    
+}

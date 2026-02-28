@@ -1,0 +1,845 @@
+[
+  {
+    "id": 81,
+    "name": "Install and Run BGInfo",
+    "description": "Downloads, installs and sets up BGInfo to run for all users.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "configFilePathOrUrlLink",
+        "name": "Config File Path or URL Link",
+        "description": "Path to a BGInfo configuration file create with BGinfo.exe. Optionally you can specify an https url that points to a bgi config file to download.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": null,
+        "required": false,
+        "valueList": null
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1743442027.769815,
+    "updatedOn": 1743442027.769816
+  },
+  {
+    "id": 82,
+    "name": "Download and Install Falcon Sensor",
+    "description": "Downloads, installs and sets up BGInfo to run for all users.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "cid",
+        "name": "CID",
+        "description": "The Crowdstrike Installation CID",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "9EE4A578ADC048A69A7DBBFBA1422C1F-0B",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1743442027.769815,
+    "updatedOn": 1743445832.977634
+  },
+  {
+    "id": 83,
+    "name": "Remove crowdstrike",
+    "description": "",
+    "active": true,
+    "language": "batchfile",
+    "architecture": [
+      "64"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1744898886.046972,
+    "updatedOn": 1744898886.046972
+  },
+  {
+    "id": 86,
+    "name": "Download and Install SentinelOne",
+    "description": "Downloads, installs SentinelOne",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "stoken",
+        "name": "stoken",
+        "description": "The SentinelOne Site Token",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1743442027.769815,
+    "updatedOn": 1745510036.819581
+  },
+  {
+    "id": 87,
+    "name": "Uninstall NinjaOne Agent",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1745873797.014646,
+    "updatedOn": 1745874228.194462
+  },
+  {
+    "id": 88,
+    "name": "Install Wazuh Sysmon",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Admin",
+    "createdOn": 1745876829.075743,
+    "updatedOn": 1771644335.89336
+  },
+  {
+    "id": 89,
+    "name": "Download and Install Wazuh Agent",
+    "description": "Downloads, installs and sets up BGInfo to run for all users.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "wserver",
+        "name": "WSERVER",
+        "description": "The Wazuh Server URL or IP Address",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "wazuh-agent.menno.tech",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1743442027.769815,
+    "updatedOn": 1745887969.433969
+  },
+  {
+    "id": 91,
+    "name": "Deploy Wi-Fi Profile",
+    "description": "Deploy a wifi profile to all users on a given device.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "ssid",
+        "name": "SSID",
+        "description": "Specify the Wi-Fi SSID/name.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": null,
+        "required": true,
+        "valueList": null
+      },
+      {
+        "id": "authenticationType",
+        "name": "Authentication Type",
+        "description": "Select either WPA2 authentication or WPA3.",
+        "type": "DROPDOWN",
+        "source": "LITERAL",
+        "defaultValue": "WPA2PSK",
+        "required": true,
+        "valueList": [
+          "WPA2PSK",
+          "WPA3SAE"
+        ]
+      },
+      {
+        "id": "nameOfASecureCustomFieldContainingPresharedKey",
+        "name": "Name of a Secure Custom Field Containing PreShared Key",
+        "description": "Specify the name of a secure custom field that contains the preshared key.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": null,
+        "required": true,
+        "valueList": null
+      },
+      {
+        "id": "overwrite",
+        "name": "Overwrite",
+        "description": "If the profile already exists overwrite it.",
+        "type": "CHECKBOX",
+        "source": "LITERAL",
+        "defaultValue": "false",
+        "required": false,
+        "valueList": null
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748616832.065603,
+    "updatedOn": 1750286202.261855
+  },
+  {
+    "id": 92,
+    "name": "Delete Wi-Fi Profile",
+    "description": "Runs netsh delete command for specified Wi-Fi SSID",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "ssid",
+        "name": "SSID",
+        "description": "The SSID that you wish to delete",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748618956.336427,
+    "updatedOn": 1750286230.811004
+  },
+  {
+    "id": 93,
+    "name": "Remove Windows Bloatware",
+    "description": "Removes AppX common bloatware that is often pre-installed on a PC.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "appsToRemove",
+        "name": "Apps To Remove",
+        "description": "A comma-separated list of Appx package names you would like to remove.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "",
+        "required": false,
+        "valueList": []
+      },
+      {
+        "id": "overrideWithCustomFieldName",
+        "name": "Override With Custom Field Name",
+        "description": "Name of a multiline custom field to retrieve the 'Apps To Remove' list.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "AppsToRemove",
+        "required": false,
+        "valueList": []
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748717719.211551,
+    "updatedOn": 1748888218.22077
+  },
+  {
+    "id": 94,
+    "name": "Get Folder Size",
+    "description": "Returns the entire space used by all subfolders in the RootFolder specified",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "rootfolder",
+        "name": "RootFolder",
+        "description": "The root folder to scan, a list of subfolders and their sizes will be returned.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "Default",
+        "required": true,
+        "valueList": []
+      },
+      {
+        "id": "recurse",
+        "name": "Recurse",
+        "description": "Determines whether or not a recursive search is done",
+        "type": "CHECKBOX",
+        "source": "LITERAL",
+        "defaultValue": "true",
+        "required": false,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748728328.957529,
+    "updatedOn": 1750285717.156566
+  },
+  {
+    "id": 95,
+    "name": "User Profile Size Report",
+    "description": "Updates a Custom Field with the total size of all User Profiles. If the Max parameter is specified then it will return an exit code of 1 for any profile being over that Max threshold in GB.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "sizeInGbToAlertOn",
+        "name": "Size in GB to Alert On",
+        "description": "Generate an alert when the profile size is greater than x GB's.",
+        "type": "DECIMAL",
+        "source": "LITERAL",
+        "defaultValue": null,
+        "required": false,
+        "valueList": null
+      },
+      {
+        "id": "customFieldNameGb",
+        "name": "Custom Field Name GB",
+        "description": "Name of a decimal customfield to send total size to.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "TotalUsersProfileSizeGB",
+        "required": false,
+        "valueList": []
+      },
+      {
+        "id": "customFieldNameDetail",
+        "name": "Custom Field Name Detail",
+        "description": "Name of a multiline customfield to send details of each profile size",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "TotalUsersProfileSizeDetail",
+        "required": false,
+        "valueList": []
+      }
+    ],
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748730775.324392,
+    "updatedOn": 1750285501.124515
+  },
+  {
+    "id": 96,
+    "name": "Remove Dell Support Assist",
+    "description": "Removes Dell Support Assist from the system.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "NinjaOne",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748887603.350177,
+    "updatedOn": 1750284604.195729
+  },
+  {
+    "id": 97,
+    "name": "Delete Windows User Profile",
+    "description": "Returns the entire space used by all subfolders in the RootFolder specified",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "userfolder",
+        "name": "UserFolder",
+        "description": "The name of the user's profile folder",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "John",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1748728328.957529,
+    "updatedOn": 1750284373.79278
+  },
+  {
+    "id": 98,
+    "name": "Putty Registry Backup",
+    "description": "A script to backup the putty configuration to a reg file store in the user's profile directory.",
+    "active": true,
+    "language": "batchfile",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1749059013.41297,
+    "updatedOn": 1749059622.122591
+  },
+  {
+    "id": 100,
+    "name": "Sleep",
+    "description": "Used to delay automations in a queue.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "seconds",
+        "name": "Seconds",
+        "description": "Seconds the script should sleep.",
+        "type": "INTEGER",
+        "source": "LITERAL",
+        "defaultValue": "300",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1749232406.722913,
+    "updatedOn": 1749232574.546701
+  },
+  {
+    "id": 101,
+    "name": "Find Large Folders",
+    "description": "This script will display the top 30 folders sorted by size",
+    "active": true,
+    "language": "sh",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Linux"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1749736090.590038,
+    "updatedOn": 1749736205.661096
+  },
+  {
+    "id": 102,
+    "name": "Set ShadowCopies MaxSize",
+    "description": "Changes the maximum size used for Windows Shadow Copies storage",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "size",
+        "name": "Size",
+        "description": "Max Shadow Copies Storage as percentage of 100",
+        "type": "INTEGER",
+        "source": "LITERAL",
+        "defaultValue": "10",
+        "required": true,
+        "valueList": []
+      },
+      {
+        "id": "drive",
+        "name": "Drive",
+        "description": "The drive letter",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "C",
+        "required": false,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1749744210.78934,
+    "updatedOn": 1750284468.973542
+  },
+  {
+    "id": 103,
+    "name": "Find Registry Keys",
+    "description": "This script recursively retrieves and displays all registry keys and values from a specified registry path.\nIt can format the output as a registry file if the formatRegFile parameter is set to \"true\".",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "regkeypath",
+        "name": "regKeyPath",
+        "description": "",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
+        "required": true,
+        "valueList": []
+      },
+      {
+        "id": "depth",
+        "name": "depth",
+        "description": "The depth of child items to traverse",
+        "type": "INTEGER",
+        "source": "LITERAL",
+        "defaultValue": "1",
+        "required": true,
+        "valueList": []
+      },
+      {
+        "id": "filtervalue",
+        "name": "filterValue",
+        "description": "A comma separated list of Registry properties to filter by",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "",
+        "required": false,
+        "valueList": []
+      },
+      {
+        "id": "formatregfile",
+        "name": "formatRegFile",
+        "description": "Enter true or false",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "false",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1750263748.386594,
+    "updatedOn": 1750284436.562078
+  },
+  {
+    "id": 104,
+    "name": "Block Windows Shell Extensions",
+    "description": "This script can be used to prevent specific shell extensions from being loaded by Windows Explorer. Explorer must be restarted for the changes to take effect.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "extension",
+        "name": "Extension",
+        "description": "The Class ID of an extension or the Exact Name of the extension, you can provide multiple names separated by commas (no quotes)",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "",
+        "required": true,
+        "valueList": []
+      },
+      {
+        "id": "force",
+        "name": "Force",
+        "description": "Set this value to true and specify a class ID to force blocking an extension by Class ID",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "false",
+        "required": true,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1750272732.353927,
+    "updatedOn": 1750284406.456068
+  },
+  {
+    "id": 105,
+    "name": "Get OneDrive Sync Status",
+    "description": "This script checks the OneDrive sync status for all users on the machine using the ODSyncUtil PowerShell module.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": [
+      {
+        "id": "rmmonedrivestatefield",
+        "name": "RMMOneDriveStateField",
+        "description": "The Number field to populate with the value of the maximum state found",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "OneDriveState",
+        "required": false,
+        "valueList": []
+      },
+      {
+        "id": "rmmonedrivedetailsfield",
+        "name": "RMMOneDriveDetailsField",
+        "description": "The String field to populate with the OneDrive status details",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "OneDriveDetails",
+        "required": false,
+        "valueList": []
+      },
+      {
+        "id": "updatescheduledtask",
+        "name": "UpdateScheduledTask",
+        "description": "Set this value to \"true\" if you want to update the action for the task if it is found.",
+        "type": "TEXT",
+        "source": "LITERAL",
+        "defaultValue": "false",
+        "required": false,
+        "valueList": []
+      }
+    ],
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1750781735.299383,
+    "updatedOn": 1751056303.142737
+  },
+  {
+    "id": 106,
+    "name": "Upgrade Duo Windows Login",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1752779799.26438,
+    "updatedOn": 1752787619.258056
+  },
+  {
+    "id": 113,
+    "name": "Deploy Blackpoint SNAP Agent",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1762559258.772098,
+    "updatedOn": 1762559500.427456
+  },
+  {
+    "id": 114,
+    "name": "Install CapsLockIndicator",
+    "description": "Installs and registers CapsLockIndicator from github.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1766421621.037794,
+    "updatedOn": 1766423362.910126
+  },
+  {
+    "id": 115,
+    "name": "Clean up User Based CapsLockIndicator",
+    "description": "Searches and removes CapsLockIndicator folders and registry keys.",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Admin",
+    "createdOn": 1766425023.10394,
+    "updatedOn": 1771643549.695099
+  },
+  {
+    "id": 116,
+    "name": "Remove Webroot",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1766605001.240789,
+    "updatedOn": 1766605107.929251
+  },
+  {
+    "id": 117,
+    "name": "Upgrade Notepad++ to v8.9.1",
+    "description": "",
+    "active": true,
+    "language": "powershell",
+    "architecture": [
+      "64",
+      "32"
+    ],
+    "operatingSystems": [
+      "Windows"
+    ],
+    "scriptParameters": [],
+    "scriptVariables": null,
+    "createdBy": "Roland Penner",
+    "lastUpdatedBy": "Roland Penner",
+    "createdOn": 1770150061.8784,
+    "updatedOn": 1770150198.421953
+  }
+]
