@@ -20,12 +20,38 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Deploy or update CapsLockIndicator from GitHub for all users
+    Deploy or update CapsLockIndicator from GitHub for all users.
 .DESCRIPTION
-    Downloads latest CapsLockIndicator, installs to Program Files, registers for all users startup, and applies custom configuration
+    Downloads the latest CapsLockIndicator release from GitHub, installs it to ProgramData,
+    grants the Users group write permissions, registers it for all-users startup via the HKLM Run
+    registry key, and optionally saves a configuration from a NinjaOne custom field.
+.OUTPUTS
+    None
+.NOTES
+    2025-12-22: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/114-Install%20CapsLockIndicator.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
-# Configuration
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
+
+    # Configuration
 $installPath = "$($env:ProgramData)\CapsLockIndicator"
 $gitHubRepo = "jonaskohl/CapsLockIndicator"
 $exeName = "CapsLockIndicator.exe"
@@ -171,3 +197,6 @@ try {
 
 Write-Output "CapsLockIndicator deployment completed successfully"
 exit 0
+}
+end {
+}

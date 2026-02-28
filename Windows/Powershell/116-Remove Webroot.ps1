@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   No description provided
+#   Removes Webroot SecureAnywhere by force, including services, registry keys, and folders.
 #
 # Metadata:
 #   - NinjaOne Script ID: 116
@@ -16,8 +16,43 @@
 #   - Last Updated: 2025-12-24 19:38:28
 #   - Active: True
 # ==============================================================================
-# Removes Webroot SecureAnywhere by force
-# Run the script once in Safe Mode, then reboot
+#Requires -Version 5.1
+
+<#
+.SYNOPSIS
+    Forcibly removes Webroot SecureAnywhere from a Windows system.
+.DESCRIPTION
+    Stops and deletes Webroot services, kills the WRSA process, removes registry keys,
+    startup entries, installation folders, and uninstall entries for all known Webroot components.
+    Run in Safe Mode for best results.
+.OUTPUTS
+    None
+.NOTES
+    2025-12-24: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/116-Remove%20Webroot.ps1
+.LICENSE
+    This script is released under the MIT License.
+#>
+
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
+
+    # Removes Webroot SecureAnywhere by force
+    # Run the script once in Safe Mode, then reboot
 
 # Webroot SecureAnywhere registry keys
 $RegKeys = @(
@@ -178,4 +213,7 @@ foreach ($RootPath in $UninstallRootPaths) {
             Remove-Item -Path $_.PsPath -Recurse -Force -ErrorAction SilentlyContinue
         }
     }
+}
+}
+end {
 }

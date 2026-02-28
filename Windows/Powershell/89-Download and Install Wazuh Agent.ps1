@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   Downloads, installs and sets up BGInfo to run for all users.
+#   Downloads, installs and configures the Wazuh Agent.
 #
 # Metadata:
 #   - NinjaOne Script ID: 89
@@ -24,74 +24,34 @@
 
 <#
 .SYNOPSIS
-    Downloads, installs and sets up BGInfo to run for all users.
+    Downloads and installs the Wazuh Agent on Windows.
 .DESCRIPTION
-    Downloads, installs and sets up BGInfo to run for all users.
-    Uses the default configuration if no .bgi file path or URL is specified.
+    Downloads the Wazuh Agent MSI installer and installs it silently using the provided Wazuh Manager server address.
 
-    Note: Users that are already logged in will need to logout and login to have BGInfo update their desktop background.
-
-.EXAMPLE
-    (No Parameters)
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
-
-.EXAMPLE
-    -Config C:\BGInfo\config.bgi
-    Specifies the BGInfo configuration file to use.
-
-PARAMETER: -Config C:\BGInfo\config.bgi
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
 .OUTPUTS
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Calculated Name Update
+    2025-03-31: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/89-Download%20and%20Install%20Wazuh%20Agent.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
+[CmdletBinding()]
+param (
+    [Parameter()]
+    [string]$WServer
+)
+
 begin {
-    if ($env:configFilePathOrUrlLink -and $env:configFilePathOrUrlLink -notlike "null") { $Config = $env:configFilePathOrUrlLink }
     function Test-IsElevated {
         $id = [System.Security.Principal.WindowsIdentity]::GetCurrent()
         $p = New-Object System.Security.Principal.WindowsPrincipal($id)
         $p.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
     }
 
-    function New-Shortcut {
-        [CmdletBinding()]
-        param(
-            [Parameter()]
-            [String]$Arguments,
-            [Parameter()]
-            [String]$IconPath,
-            [Parameter(ValueFromPipeline = $True)]
-            [String]$Path,
-            [Parameter()]
-            [String]$Target,
-            [Parameter()]
-            [String]$WorkingDir
-        )
-        process {
-            Write-Host "Creating Shortcut at $Path"
-            $ShellObject = New-Object -ComObject ("WScript.Shell")
-            $Shortcut = $ShellObject.CreateShortcut($Path)
-            $Shortcut.TargetPath = $Target
-            if ($WorkingDir) { $Shortcut.WorkingDirectory = $WorkingDir }
-            if ($Arguments) { $ShortCut.Arguments = $Arguments }
-            if ($IconPath) { $Shortcut.IconLocation = $IconPath }
-            $Shortcut.Save()
-
-            if (!(Test-Path $Path -ErrorAction SilentlyContinue)) {
-                Write-Error "Unable to create Shortcut at $Path"
-                exit 1
-            }
-        }
-    }
     # Utility function for downloading files.
     function Invoke-Download {
         param(
@@ -264,7 +224,7 @@ process {
       }
     }
 
-    Write-Host "Successfully installed and set up Falcon Sensor with  WSERVER = $($env:wserver)"
+    Write-Host "Successfully installed and set up Wazuh Agent with WSERVER = $($env:wserver)"
     exit 0
 }
 end {

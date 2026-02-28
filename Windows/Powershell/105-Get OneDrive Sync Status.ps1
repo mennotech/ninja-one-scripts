@@ -191,7 +191,7 @@ process {
             Write-Error "Failed to create Scheduled Task '$taskName'. Error: $_"
             return
         }
-        $StatusDetail += "Scheduled Task '$taskName' created successfully."
+        $StatusDetails += "Scheduled Task '$taskName' created successfully."
     } else {
         $lastRunTime = ($taskExists | Get-ScheduledTaskInfo).LastRunTime
         $StatusDetails += "Scheduled Task '$taskName' already exists. Last run: $lastRunTime"

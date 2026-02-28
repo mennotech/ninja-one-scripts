@@ -36,7 +36,11 @@
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Initial Release
+    2025-06-02: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/96-Remove%20Dell%20Support%20Assist.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
 [CmdletBinding()]

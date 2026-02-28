@@ -51,14 +51,17 @@ Done.
 #>
 
 
-Param(
+[CmdletBinding()]
+param (
+    [Parameter()]
     [string] $UserFolder = "Default"
 )
 
+begin {
 # Replace parameters with dynamic script variables.
 if ($env:UserFolder -and $env:UserFolder -notlike "null") { $UserFolder = $env:UserFolder }
-
-
+}
+process {
 $UserProfiles = Get-WmiObject -Class Win32_UserProfile | Where-Object { $_.LocalPath -match $UserFolder } 
 
 if ($UserProfiles) {
@@ -79,3 +82,6 @@ if ($UserProfiles) {
 
 Write-Host "Done."
 Exit 0
+}
+end {
+}

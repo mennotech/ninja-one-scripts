@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   Downloads, installs and sets up BGInfo to run for all users.
+#   Downloads, installs and configures the CrowdStrike Falcon Sensor.
 #
 # Metadata:
 #   - NinjaOne Script ID: 82
@@ -24,34 +24,19 @@
 
 <#
 .SYNOPSIS
-    Downloads, installs and sets up BGInfo to run for all users.
+    Downloads and installs the CrowdStrike Falcon Sensor on Windows.
 .DESCRIPTION
-    Downloads, installs and sets up BGInfo to run for all users.
-    Uses the default configuration if no .bgi file path or URL is specified.
+    Downloads the CrowdStrike Falcon Sensor installer from a specified URL and installs it silently using the provided Customer ID (CID).
 
-    Note: Users that are already logged in will need to logout and login to have BGInfo update their desktop background.
-
-.EXAMPLE
-    (No Parameters)
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
-
-.EXAMPLE
-    -Config C:\BGInfo\config.bgi
-    Specifies the BGInfo configuration file to use.
-
-PARAMETER: -Config C:\BGInfo\config.bgi
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
 .OUTPUTS
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Calculated Name Update
+    2025-03-31: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/82-Download%20and%20Install%20Falcon%20Sensor.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
 [CmdletBinding()]

@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   No description provided
+#   Completely removes the NinjaOne RMM agent and NinjaRemote from a Windows system.
 #
 # Metadata:
 #   - NinjaOne Script ID: 87
@@ -16,22 +16,41 @@
 #   - Last Updated: 2025-04-28 21:03:48
 #   - Active: True
 # ==============================================================================
-# INSTRUCTIONS:
-# 1. Open NinjaOne GUI: https://ca.ninjarmm.com
-# 2. Navigate to: Administration → Library → Automation → Scripts
-# 3. Find and open: "Uninstall NinjaOne Agent"
-# 4. Copy the entire script content
-# 5. Paste below this header (replace the placeholder comment)
-# 6. Save and commit to Git
-# ==============================================================================
-#Get current user context
-$CurrentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
-#Check user that is running the script is a member of Administrator Group
-if (!($CurrentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator))) {
-  #UAC Prompt will occur for the user to input Administrator credentials and relaunch the powershell session
-  Write-Output 'This script must be ran with administrative privileges'
-  Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; Exit
+#Requires -Version 5.1
+
+<#
+.SYNOPSIS
+    Completely removes the NinjaOne RMM agent and NinjaRemote from a Windows system.
+.DESCRIPTION
+    Uninstalls the NinjaRMMAgent MSI, stops and deletes all related services and processes,
+    removes installation directories, cleans up registry keys, and removes the NinjaRemote
+    virtual display driver and printer across all user profiles.
+.OUTPUTS
+    None
+.NOTES
+    2025-04-28: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/87-Uninstall%20NinjaOne%20Agent.ps1
+.LICENSE
+    This script is released under the MIT License.
+#>
+
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
 }
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
+
 
 $Now = Get-Date -Format 'dd-MM-yyyy_HHmmss'
 $LogPath = "$env:windir\temp\NinjaRemoval_$Now.txt"
@@ -337,3 +356,6 @@ Write-Host 'Removal of Ninja Remote complete.'
 
 Write-Output 'Removal script completed. Please review if any errors displayed.'
 Stop-Transcript
+}
+end {
+}

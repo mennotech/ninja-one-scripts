@@ -50,7 +50,11 @@ PARAMETER: -Config C:\BGInfo\config.bgi
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Calculated Name Update
+    2025-03-31: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/81-Install%20and%20Run%20BGInfo.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
 [CmdletBinding()]

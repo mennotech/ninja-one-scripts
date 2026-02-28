@@ -64,7 +64,7 @@ param (
 )
 
 begin {
-    if ($env:regKeyPath -and $env:reKeyPath -notlike "null") { $regKeyPath = $env:regKeyPath }
+    if ($env:regKeyPath -and $env:regKeyPath -notlike "null") { $regKeyPath = $env:regKeyPath }
     if ($env:depth -and $env:depth -notlike "null") { $depth = [int]$env:depth }
     if ($env:filterValue -and $env:filterValue -notlike "null") { 
         $filterValue = $env:filterValue -split ',' | ForEach-Object { $_.Trim() } 
@@ -127,7 +127,7 @@ function Get-RegistryKeys {
             Get-RegistryKeys -path $key.PSPath -currentDepth ($currentDepth + 1) -maxDepth $maxDepth
         }
     } catch {
-        Write-Warninginging "Error accessing registry key: $path"
+        Write-Warning "Error accessing registry key: $path"
     }
 }
 
