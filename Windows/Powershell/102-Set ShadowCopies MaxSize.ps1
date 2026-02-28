@@ -75,15 +75,20 @@ Update failed:
 #>
 
 
-Param(
+[CmdletBinding()]
+param (
+    [Parameter()]
     [int] $Size = 0,
+    [Parameter()]
     [string] $Drive = "C"
 )
 
+begin {
 # Replace parameters with dynamic script variables.
 if ($env:Size -and $env:Size -notlike "null") { $Size = $env:Size}
 if ($env:Drive -and $env:Drive -notlike "null") { $Drive = $env:Drive }
-
+}
+process {
 if ($Size -eq 0) {
   Write-Host "Usage: $0 -Size [int] -Drive [drive letter]"
   Exit 1
@@ -122,4 +127,7 @@ if ($update -match "Successfully resized") {
     Write-Host "Update failed:"
     $update | Select-Object -Skip 3 | % { Write-Host " "($_).trim() }
     exit 2
+}
+}
+end {
 }

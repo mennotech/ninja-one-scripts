@@ -20,10 +20,35 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Remove per-user CapsLockIndicator installations from all user profiles
+    Remove per-user CapsLockIndicator installations from all user profiles.
 .DESCRIPTION
-    Cleans up CapsLockIndicator folders and registry entries from individual user profiles
+    Cleans up CapsLockIndicator folders and registry run-key entries from individual user profiles.
+    Handles both loaded and unloaded registry hives. Requires administrative privileges.
+.OUTPUTS
+    None
+.NOTES
+    2025-12-22: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/115-Clean%20up%20User%20Based%20CapsLockIndicator.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
+
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+}
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
 
 $cleanupCount = 0
 $appFolderName = "CapsLockIndicator"
@@ -172,3 +197,6 @@ Write-Output "  Cleaned: $cleanupCount installation(s)"
 Write-Output "========================================="
 
 exit 0
+}
+end {
+}

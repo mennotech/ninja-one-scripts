@@ -32,7 +32,11 @@
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Initial Release
+    2025-03-31: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/89-Download%20and%20Install%20Wazuh%20Agent.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
 [CmdletBinding()]

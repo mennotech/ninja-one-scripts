@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   No description provided
+#   Downloads and installs the Blackpoint SNAP Agent using a URL from a NinjaOne custom field.
 #
 # Metadata:
 #   - NinjaOne Script ID: 113
@@ -16,21 +16,34 @@
 #   - Last Updated: 2025-11-07 23:51:40
 #   - Active: True
 # ==============================================================================
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-#.______    __          ___       ______  __  ___ .______     ______    __  .__   __. .___________.##  
-#|   _  \  |  |        /   \     /      ||  |/  / |   _  \   /  __  \  |  | |  \ |  | |           |## 
-#|  |_)  | |  |       /  ^  \   |  ,----'|  '  /  |  |_)  | |  |  |  | |  | |   \|  | `---|  |----`##  
-#|   _  <  |  |      /  /_\  \  |  |     |    <   |   ___/  |  |  |  | |  | |  . `  |     |  |####### 
-#|  |_)  | |  `----./  _____  \ |  `----.|  .  \  |  |      |  `--'  | |  | |  |\   |     |  |#######         
-#|______/  |_______/__/     \__\ \______||__|\__\ | _|       \______/  |__| |__| \__|     |__|#######         
-#####################################################################################################                                                                                                
-####################################╔═╗╔╗╔╔═╗╔═╗///╔╦╗╔═╗╔═╗╔═╗╔╗╔╔═╗╔═╗#############################
-####################################╚═╗║║║╠═╣╠═╝/// ║║║╣ ╠╣ ║╣ ║║║╚═╗║╣ ###### Ver 2.2 04/09/2021 ###
-####################################╚═╝╝╚╝╩ ╩╩/////═╩╝╚═╝╚  ╚═╝╝╚╝╚═╝╚═╝#############################
+#Requires -Version 5.1
 
-###########
-# EDIT ME
-###########
+<#
+.SYNOPSIS
+    Downloads and installs the Blackpoint SNAP Agent on Windows.
+.DESCRIPTION
+    Reads the Blackpoint installer URL from a NinjaOne custom field named 'blackpointInstallerUrl',
+    downloads the snap_installer.exe to the temp directory, verifies the download, and runs the
+    installer silently. Requires .NET 4.6.1 or later.
+.OUTPUTS
+    None
+.NOTES
+    2025-11-07: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/113-Deploy%20Blackpoint%20SNAP%20Agent.ps1
+.LICENSE
+    This script is released under the MIT License.
+#>
+
+[CmdletBinding()]
+param ()
+
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
 
 function Get-NinjaProperty {
     [CmdletBinding()]
@@ -145,10 +158,13 @@ function Get-NinjaProperty {
         }
     }
 }
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
 
-
-
-#Customer UID found in URL From Blackpoint Portal
+    #Customer UID found in URL From Blackpoint Portal
 $blackpointInstallerUrl = Get-NinjaProperty -Name "blackpointInstallerUrl"
 
 if ($blackpointInstallerUrl) {
@@ -292,4 +308,7 @@ catch
     $ErrorMsg = $_.Exception.Message
     Write-Host "$(Get-TimeStamp) $ErrorMsg"
     exit 1
+}
+}
+end {
 }

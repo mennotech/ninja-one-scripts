@@ -80,46 +80,18 @@ Scanning C:\Windows\
 #>
 
 
-Param(
+[CmdletBinding()]
+param (
+    [Parameter()]
     [string] $RootFolder = "Default",
+    [Parameter()]
     [bool] $Recurse = $true
 )
 
+begin {
 # Replace parameters with dynamic script variables.
 if ($env:RootFolder -and $env:RootFolder -notlike "null") { $RootFolder = $env:RootFolder }
 if ($env:Recurse -and $env:Recurse -eq "false") { $Recurse = $false }
-
-Function Main {
-    #By default scan C:\ and then C:\Users
-    if ($rootFolder -eq "Default") {
-        $results = Scan-Folder -RootFolder "$($Env:SystemDrive)\" -Recurse $Recurse
-        Write-FolderTable $results
-
-        $results = Scan-Folder -RootFolder "$($Env:SystemDrive)\Users" -Recurse $Recurse
-        Write-FolderTable $results
-
-        $results = Scan-Folder -RootFolder $Env:ProgramData -Recurse $Recurse
-        Write-FolderTable $results
-
-        $results = Scan-Folder -RootFolder $Env:ProgramFiles -Recurse $Recurse
-        Write-FolderTable $results
-        
-        $results = Scan-Folder -RootFolder ${Env:ProgramFiles(x86)} -Recurse $Recurse
-        Write-FolderTable $results
-        
-        
-
-    } else {
-        if (!(Test-Path -Path $RootFolder)) {
-           Write-Error "$RootFolder does not exist. Exiting"
-            Exit 100
-        }
-        
-        $results = Scan-Folder -RootFolder $RootFolder -Recurse $Recurse
-        Write-FolderTable $results
-    }
-
-}
 
 Function Write-FolderTable {
     Param(
@@ -187,10 +159,6 @@ Function Scan-Folder {
         Write-Progress -Activity "Scanning folders... ($completedjobs of $FolderCount)" -CurrentOperation "$($i + $x)" -PercentComplete (($completedjobs / $FolderCount) * 100)
         start-sleep 1
     }
-
-    #Get Root Folder Size
-
-
 
     #Get information from each job.
     foreach($job in Get-Job){
@@ -270,6 +238,34 @@ Function Format-Bytes {
     }
     End{}
 }
+}
+process {
+    #By default scan C:\ and then C:\Users
+    if ($RootFolder -eq "Default") {
+        $results = Scan-Folder -RootFolder "$($Env:SystemDrive)\" -Recurse $Recurse
+        Write-FolderTable $results
 
+        $results = Scan-Folder -RootFolder "$($Env:SystemDrive)\Users" -Recurse $Recurse
+        Write-FolderTable $results
 
-Main
+        $results = Scan-Folder -RootFolder $Env:ProgramData -Recurse $Recurse
+        Write-FolderTable $results
+
+        $results = Scan-Folder -RootFolder $Env:ProgramFiles -Recurse $Recurse
+        Write-FolderTable $results
+        
+        $results = Scan-Folder -RootFolder ${Env:ProgramFiles(x86)} -Recurse $Recurse
+        Write-FolderTable $results
+
+    } else {
+        if (!(Test-Path -Path $RootFolder)) {
+           Write-Error "$RootFolder does not exist. Exiting"
+            Exit 100
+        }
+        
+        $results = Scan-Folder -RootFolder $RootFolder -Recurse $Recurse
+        Write-FolderTable $results
+    }
+}
+end {
+}

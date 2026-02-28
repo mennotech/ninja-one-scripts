@@ -24,11 +24,22 @@
 
 <#
 .SYNOPSIS
-    Simple sleep function
+    Simple sleep function.
 .DESCRIPTION
-    Waits for the number of seconds then exits
+    Waits for the specified number of seconds then exits. Used to introduce delays between automations in a NinjaOne queue.
+.PARAMETER Seconds
+    The number of seconds to sleep. Defaults to 60.
 .EXAMPLE
-     -Seconds 60
+    -Seconds 300
+    Sleeps for 5 minutes.
+.OUTPUTS
+    None
+.NOTES
+    2025-06-06: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/100-Sleep.ps1
+.LICENSE
+    This script is released under the MIT License.
 #>
 
 [CmdletBinding()]

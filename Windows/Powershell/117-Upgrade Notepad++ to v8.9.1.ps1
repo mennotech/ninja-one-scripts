@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   No description provided
+#   Uninstalls any existing Notepad++ and installs v8.9.1 (x64) silently.
 #
 # Metadata:
 #   - NinjaOne Script ID: 117
@@ -16,41 +16,73 @@
 #   - Last Updated: 2026-02-03 20:23:18
 #   - Active: True
 # ==============================================================================
+#Requires -Version 5.1
 
-# Requires: PowerShell 5+
-# Purpose : Uninstall existing Notepad++ and install v8.9.1 (x64) silently
-# Exit codes:
-#   0  = Success
-#   10 = Uninstall failed
-#   20 = Download failed
-#   30 = Install failed
+<#
+.SYNOPSIS
+    Uninstalls any existing Notepad++ and installs version 8.9.1 (x64) silently.
+.DESCRIPTION
+    Detects and silently removes all existing Notepad++ installations, downloads the
+    v8.9.1 x64 NSIS installer from the official GitHub release, verifies the download,
+    installs it silently, and cleans up temporary files. Logs all steps to a NinjaOne
+    log file under ProgramData.
+.OUTPUTS
+    None
+.NOTES
+    2026-02-03: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/117-Upgrade%20Notepad%2B%2B%20to%20v8.9.1.ps1
+.LICENSE
+    This script is released under the MIT License.
+#>
 
-# Region: Setup
-$ErrorActionPreference = 'Stop'
-$ProgressPreference = 'SilentlyContinue'
+[CmdletBinding()]
+param ()
 
-$InstallerUrl = 'https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.1/npp.8.9.1.Installer.x64.exe'
-$TempDir      = Join-Path $env:TEMP "NPP_Deploy"
-$Installer    = Join-Path $TempDir "npp.8.9.1.Installer.x64.exe"
-$LogDir       = Join-Path $env:ProgramData "NinjaOne\Logs"
-$LogFile      = Join-Path $LogDir "NotepadPP_Deploy_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+begin {
+    function Test-IsElevated {
+        $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        return $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
 
-# Ensure directories exist
-New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
-New-Item -ItemType Directory -Path $LogDir -Force | Out-Null
-
-# Simple logging helper
-function Write-Log {
-    param([string]$Message)
-    $stamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
-    $line  = "[$stamp] $Message"
-    $line | Tee-Object -FilePath $LogFile -Append
+    # Exit codes:
+    #   0  = Success
+    #   10 = Uninstall failed
+    #   20 = Download failed
+    #   30 = Install failed
 }
+process {
+    if (-not (Test-IsElevated)) {
+        Write-Error "This script requires administrative privileges."
+        exit 1
+    }
 
-Write-Log "=== Notepad++ Deployment started ==="
+    $ErrorActionPreference = 'Stop'
+    $ProgressPreference = 'SilentlyContinue'
 
-# Region: Helper to get existing Notepad++ uninstaller(s)
-function Get-NppUninstallEntries {
+    $InstallerUrl = 'https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.9.1/npp.8.9.1.Installer.x64.exe'
+    $TempDir      = Join-Path $env:TEMP "NPP_Deploy"
+    $Installer    = Join-Path $TempDir "npp.8.9.1.Installer.x64.exe"
+    $LogDir       = Join-Path $env:ProgramData "NinjaOne\Logs"
+    $LogFile      = Join-Path $LogDir "NotepadPP_Deploy_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+
+    # Ensure directories exist
+    New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
+    New-Item -ItemType Directory -Path $LogDir -Force | Out-Null
+
+    # Simple logging helper
+    function Write-Log {
+        param([string]$Message)
+        $stamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+        $line  = "[$stamp] $Message"
+        $line | Tee-Object -FilePath $LogFile -Append
+    }
+
+    Write-Log "=== Notepad++ Deployment started ==="
+
+    # Helper to get existing Notepad++ uninstaller(s)
+    function Get-NppUninstallEntries {
     $paths = @(
         'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
         'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
@@ -233,31 +265,33 @@ function Install-NotepadPP {
     }
 }
 
-# ===================== MAIN =====================
-$uninstalled = Uninstall-NotepadPP
-if (-not $uninstalled) {
-    Write-Log "Uninstall phase reported failure."
-    Write-Log "=== Notepad++ Deployment finished with errors (uninstall) ==="
-    Exit 10
+    $uninstalled = Uninstall-NotepadPP
+    if (-not $uninstalled) {
+        Write-Log "Uninstall phase reported failure."
+        Write-Log "=== Notepad++ Deployment finished with errors (uninstall) ==="
+        Exit 10
+    }
+
+    $downloaded = Download-Installer
+    if (-not $downloaded) {
+        Write-Log "=== Notepad++ Deployment finished with errors (download) ==="
+        Exit 20
+    }
+
+    $installed = Install-NotepadPP
+    if (-not $installed) {
+        Write-Log "=== Notepad++ Deployment finished with errors (install) ==="
+        Exit 30
+    }
+
+    Write-Log "=== Notepad++ Deployment completed successfully ==="
+
+    # Cleanup (optional)
+    try {
+        Remove-Item -LiteralPath $TempDir -Recurse -Force -ErrorAction SilentlyContinue
+    } catch { }
+
+    Exit 0
 }
-
-$downloaded = Download-Installer
-if (-not $downloaded) {
-    Write-Log "=== Notepad++ Deployment finished with errors (download) ==="
-    Exit 20
+end {
 }
-
-$installed = Install-NotepadPP
-if (-not $installed) {
-    Write-Log "=== Notepad++ Deployment finished with errors (install) ==="
-    Exit 30
-}
-
-Write-Log "=== Notepad++ Deployment completed successfully ==="
-
-# Cleanup (optional)
-try {
-    Remove-Item -LiteralPath $TempDir -Recurse -Force -ErrorAction SilentlyContinue
-} catch { }
-
-Exit 0

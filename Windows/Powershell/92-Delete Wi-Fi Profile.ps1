@@ -55,9 +55,12 @@
     -Overwrite
         If the profile already exists overwrite it.
 
+.OUTPUTS
+    None
 .NOTES
-    2025-06-18 Initial Release
-
+    2025-06-18: Initial version of the script.
+.LINK
+    https://github.com/mennotech/ninja-one-scripts/blob/main/Windows/Powershell/92-Delete%20Wi-Fi%20Profile.ps1
 .LICENSE
     This script is released under the MIT License.
 #>
