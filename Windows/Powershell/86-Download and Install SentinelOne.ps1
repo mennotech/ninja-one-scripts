@@ -3,7 +3,7 @@
 # ==============================================================================
 #
 # Description:
-#   Downloads, installs SentinelOne
+#   Downloads, installs and configures SentinelOne endpoint protection.
 #
 # Metadata:
 #   - NinjaOne Script ID: 86
@@ -31,34 +31,15 @@
 
 <#
 .SYNOPSIS
-    Downloads, installs and sets up BGInfo to run for all users.
+    Downloads and installs SentinelOne endpoint protection on Windows.
 .DESCRIPTION
-    Downloads, installs and sets up BGInfo to run for all users.
-    Uses the default configuration if no .bgi file path or URL is specified.
+    Downloads the SentinelOne installer from a specified URL and installs it silently using the provided site token.
 
-    Note: Users that are already logged in will need to logout and login to have BGInfo update their desktop background.
-
-.EXAMPLE
-    (No Parameters)
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
-
-.EXAMPLE
-    -Config C:\BGInfo\config.bgi
-    Specifies the BGInfo configuration file to use.
-
-PARAMETER: -Config C:\BGInfo\config.bgi
-    ## EXAMPLE OUTPUT WITHOUT PARAMS ##
-    Create Directory: C:\WINDOWS\System32\SysInternals
-    Downloading https://live.sysinternals.com/Bginfo.exe
-    Created Shortcut: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\BGInfo.lnk
 .OUTPUTS
     None
 .NOTES
     Minimum OS Architecture Supported: Windows 10, Windows Server 2016
-    Release Notes: Calculated Name Update
+    Release Notes: Initial Release
 #>
 
 [CmdletBinding()]

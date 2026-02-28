@@ -208,7 +208,7 @@ process {
         if ($ProvisionedPackage.Count -gt 1) {
             Write-Host "[Error] Too many Apps were found with the name '$App'. Please re-run with a more specific name."
             Write-Host ($ProvisionedPackage | Select-Object DisplayName | Sort-Object DisplayName | Out-String)
-            ExitCode = 1
+            $ExitCode = 1
             continue
         }
 
@@ -216,7 +216,7 @@ process {
         if ($ProvisionedPackage -and $AppxPackage -and $AppxPackage.Name -ne $ProvisionedPackage.DisplayName) {
             Write-Host "[Error] Too many Apps were found with the name '$App'. Please re-run with a more specific name."
             Write-Host ($ProvisionedPackage | Select-Object DisplayName | Sort-Object DisplayName | Out-String)
-            ExitCode = 1
+            $ExitCode = 1
             continue
         }
 
