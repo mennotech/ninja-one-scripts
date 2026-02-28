@@ -58,7 +58,7 @@
     1.0.0 - 2026-02-20 - Initial release
 
 .LINK
-    https://github.com/yourusername/ninja-one-scripts
+    https://github.com/mennotech/ninja-one-scripts
 
 .LICENSE
     MIT License - See LICENSE file in repository root
@@ -142,9 +142,10 @@ begin {
                         $value = $value -replace '^["'']|["'']$', ''
                         
                         # Set environment variable (respecting Force parameter)
-                        if ($Force -or -not (Get-Item -Path "Env:$key" -ErrorAction SilentlyContinue)) {
+                        $alreadyExists = $null -ne (Get-Item -Path "Env:$key" -ErrorAction SilentlyContinue)
+                        if ($Force -or -not $alreadyExists) {
                             Set-Item -Path "Env:$key" -Value $value
-                            if ($Force -and (Get-Item -Path "Env:$key" -ErrorAction SilentlyContinue)) {
+                            if ($Force -and $alreadyExists) {
                                 Write-Verbose "Overrode existing environment variable: $key"
                             } else {
                                 Write-Verbose "Loaded from .env: $key"
@@ -579,6 +580,12 @@ $commentChar TODO: Paste script content from NinjaOne GUI here
         Write-Error "  - NINJAONE_CLIENT_SECRET"
         Write-Error "  - NINJAONE_INSTANCE (e.g., app.ninjarmm.com)"
         Write-Error "  - NINJAONE_SCOPE (optional, defaults to 'monitoring')"
+        exit 1
+    }
+    
+    # Validate instance is a safe hostname to prevent unintended URL construction
+    if ($instance -notmatch '^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*$') {
+        Write-Error "Invalid NINJAONE_INSTANCE value '$instance'. Expected a hostname like 'app.ninjarmm.com'."
         exit 1
     }
     
